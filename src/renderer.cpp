@@ -44,7 +44,6 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   // blocks have x and y axis and height and width
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
-  cout << "rendering some food" << std::endl;
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   // params are r, g ,b, and opacity values
@@ -57,6 +56,8 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
+  cout << "rendering some food" << food.x << food.y << std::endl;
+
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
