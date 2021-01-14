@@ -19,6 +19,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point superfood;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -29,6 +30,7 @@ class Game {
 
   void PlaceFood();
   void Update();
+  void CreateSuperFood(int givenScore, int new_x, int new_y);
 };
 
 #endif

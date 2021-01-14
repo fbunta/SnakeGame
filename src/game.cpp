@@ -1,5 +1,6 @@
 #include "game.h"
 #include <iostream>
+#include <thread>
 // #include "SDL.h"
 #include </usr/include/SDL2/SDL.h>
 
@@ -28,7 +29,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, superfood);
 
     frame_end = SDL_GetTicks();
 
@@ -61,7 +62,7 @@ void Game::PlaceFood() {
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!snake.SnakeCell(x, y)) {
-      cout << "placing some food. x: " << food.x << " y: " << food.y << std::endl;
+      cout << "placing food x: " << food.x << " y: " << food.y << std::endl;
       food.x = x;
       food.y = y;
       return;
@@ -81,11 +82,40 @@ void Game::Update() {
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
+    if (score % 5 == 0) {
+      CreateSuperFood(score, new_x, new_y);
+    } else {
+      superfood.x = -1;
+      superfood.y = -1;
+    }
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+  } else if (superfood.x == new_x and superfood.y == new_y) 
+  {
+    score++;
+    snake.GrowBody();
+    snake.speed -= 0.1;
   }
 }
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
+
+void Game::CreateSuperFood(int givenScore, int new_x, int new_y) {
+  int x, y;
+  x = random_w(engine);
+  y = random_h(engine);
+  if (!snake.SnakeCell(x, y) and !x==food.x and !y==food.y) {
+    cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
+    superfood.x = x;
+    superfood.y = y;
+  // while (score == givenScore)
+  // {
+  //   if (superfood.x == new_x and superfood.y == new_y) {
+  //     score++;
+  //     snake.GrowBody();
+  //     snake.speed -= 0.1;
+  //   }
+  }
+}
