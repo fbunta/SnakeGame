@@ -22,6 +22,7 @@ void Snake::Update() {
 void Snake::UpdateHead() {
   switch (direction) {
     case Direction::kUp:
+    //  origin is in upper left corner in sdl with Y axis positive in bottom left corner, so going up in game means decreasing Y value 
       head_y -= speed;
       break;
 

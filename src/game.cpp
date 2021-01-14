@@ -1,6 +1,7 @@
 #include "game.h"
 #include <iostream>
-#include "SDL.h"
+// #include "SDL.h"
+#include </usr/include/SDL2/SDL.h>
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
@@ -73,7 +74,7 @@ void Game::Update() {
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
 
-  // Check if there's food over here
+  // Check if there's food where the head is
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();

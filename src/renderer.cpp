@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include <iostream>
 #include <string>
+using std::cout;
 
 Renderer::Renderer(const std::size_t screen_width,
                    const std::size_t screen_height,
@@ -40,15 +41,19 @@ Renderer::~Renderer() {
 
 void Renderer::Render(Snake const snake, SDL_Point const &food) {
   SDL_Rect block;
+  // blocks have x and y axis and height and width
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
-
+  cout << "rendering some food" << std::endl;
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+  // params are r, g ,b, and opacity values
   SDL_RenderClear(sdl_renderer);
+  // draws the entire screen
 
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
+  
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);

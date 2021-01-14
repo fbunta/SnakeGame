@@ -1,11 +1,13 @@
 #include "controller.h"
 #include <iostream>
-#include "SDL.h"
+// #include "SDL.h"
+#include </usr/include/SDL2/SDL.h>
 #include "snake.h"
 
 void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
                                  Snake::Direction opposite) const {
   if (snake.direction != opposite || snake.size == 1) snake.direction = input;
+  // if snake has no body we can turn exactly around, but otherwsie we cant
   return;
 }
 

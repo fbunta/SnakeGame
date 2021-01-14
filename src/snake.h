@@ -2,7 +2,7 @@
 #define SNAKE_H
 
 #include <vector>
-#include "SDL.h"
+#include </usr/include/SDL2/SDL.h>
 
 class Snake {
  public:
@@ -11,6 +11,7 @@ class Snake {
   Snake(int grid_width, int grid_height)
       : grid_width(grid_width),
         grid_height(grid_height),
+        // init the position of snake at the start
         head_x(grid_width / 2),
         head_y(grid_height / 2) {}
 
@@ -20,6 +21,7 @@ class Snake {
   bool SnakeCell(int x, int y);
 
   Direction direction = Direction::kUp;
+  // init snake to start up
 
   float speed{0.1f};
   int size{1};
@@ -33,6 +35,7 @@ class Snake {
   void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 
   bool growing{false};
+  // once snake eats some food we will set this
   int grid_width;
   int grid_height;
 };
