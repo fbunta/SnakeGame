@@ -56,7 +56,6 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
-  cout << "rendering some food" << food.x << food.y << std::endl;
 
 
   // Render snake's body
@@ -82,6 +81,6 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
 }
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
-  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps) + " press q to quit"};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }

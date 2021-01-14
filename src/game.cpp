@@ -3,6 +3,8 @@
 // #include "SDL.h"
 #include </usr/include/SDL2/SDL.h>
 
+using std::cout;
+
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
@@ -59,6 +61,7 @@ void Game::PlaceFood() {
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!snake.SnakeCell(x, y)) {
+      cout << "placing some food. x: " << food.x << " y: " << food.y << std::endl;
       food.x = x;
       food.y = y;
       return;
