@@ -12,7 +12,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   score = (int *)malloc(sizeof(int));
-  SetScore();
+  SetScore(0);
   PlaceFood();
   PlaceSuperfood();
 }
