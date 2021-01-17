@@ -80,7 +80,7 @@ void Game::PlaceSuperfood() {
     x = random_w(engine);
     y = random_h(engine);
     // Check that the location is not occupied by a snake or food item before placing food.
-    if (!snake.SnakeCell(x, y) and !x==food.x and !y==food.y) {
+    if ((!snake.SnakeCell(x, y)) && (x != food.x) && (y != food.y)) {
       cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
       superfood.x = x;
       superfood.y = y;
