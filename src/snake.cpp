@@ -37,6 +37,7 @@ void Snake::UpdateHead() {
     case Direction::kRight:
       head_x += speed;
       break;
+    std::cout << "snake is x: " << head_x << " y: " << head_y << std::endl;
   }
 
   // Wrap the Snake around to the beginning if going off of the screen.
