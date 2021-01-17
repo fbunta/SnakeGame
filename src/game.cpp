@@ -143,13 +143,13 @@ void Game::Update(bool superLevel) {
   }
 }
 
-int Game::GetScore() const { return *score; }
+int Game::GetScore() { return *score; }
 void Game::IncrementScore() {
   int currentScore = GetScore();
   cout << "current score is " << currentScore << std::endl;
-  *score == currentScore + 1;
+  SetScore(currentScore + 1);
 }
-void Game::SetScore() {
-  *score = 0;
+void Game::SetScore(int newScore) {
+  *score = newScore;
 }
 int Game::GetSize() const { return snake.size; }
