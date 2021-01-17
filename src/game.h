@@ -15,6 +15,7 @@ class Game {
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore();
+  void SetScore(int newScore);
   int GetSize() const;
 
  private:
@@ -33,7 +34,6 @@ class Game {
   void PlaceSuperfood();
   void Update(bool superLevel);
   void IncrementScore();
-  void SetScore(int newScore);
 };
 
 #endif
