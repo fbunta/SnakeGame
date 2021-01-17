@@ -122,7 +122,7 @@ void Game::Update(bool superLevel) {
   // Check if there's food where the head is
   if (food.x == new_x && food.y == new_y)
   {
-    IncrementScore(*score);
+    IncrementScore();
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
@@ -133,7 +133,7 @@ void Game::Update(bool superLevel) {
   {
     if (superfood.x == new_x and superfood.y == new_y)
     {
-      IncrementScore(*score);
+      IncrementScore();
       // PlaceFood();
       PlaceSuperfood();
       // superfood reduces speed instead
@@ -144,7 +144,9 @@ void Game::Update(bool superLevel) {
 }
 
 int Game::GetScore() const { return *score; }
-void Game::IncrementScore(int currentScore) {
+void Game::IncrementScore() {
+  int currentScore = GetScore();
+  cout << "current score is " << currentScore << std::endl;
   *score == currentScore + 1;
 }
 void Game::SetScore() {
