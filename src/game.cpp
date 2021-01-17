@@ -28,7 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
-    if (score % 5 == 0) {
+    if ((score % 3 == 0) && (score != 0)) {
       Update(true);
       renderer.RenderSuperFood(superfood);
     } else {
@@ -84,6 +84,7 @@ void Game::PlaceSuperfood() {
       cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
       superfood.x = x;
       superfood.y = y;
+      return;
     } else {
       cout << "invalid superfood location x: " << superfood.x << " y: " << superfood.y << std::endl;
     }
