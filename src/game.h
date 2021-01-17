@@ -29,8 +29,8 @@ class Game {
   int score{0};
 
   void PlaceFood();
-  void Update();
-  void CreateSuperFood(int givenScore, int new_x, int new_y);
+  void PlaceSuperfood();
+  void Update(bool superLevel);
 };
 
 #endif

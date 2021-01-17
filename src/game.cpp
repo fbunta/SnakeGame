@@ -28,8 +28,13 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
-    Update();
-    renderer.Render(snake, food, superfood);
+    if (score % 5 == 0) {
+      Update(true);
+      renderer.RenderSuperFood(superfood);
+    } else {
+      Update(false);
+    }
+    renderer.Render(snake, food);
 
     frame_end = SDL_GetTicks();
 
@@ -70,7 +75,18 @@ void Game::PlaceFood() {
   }
 }
 
-void Game::Update() {
+void Game::PlaceSuperfood() {
+  int x, y;
+  x = random_w(engine);
+  y = random_h(engine);
+  if (!snake.SnakeCell(x, y) and !x==food.x and !y==food.y) {
+    cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
+    superfood.x = x;
+    superfood.y = y;
+  }
+}
+
+void Game::Update(bool superLevel) {
   if (!snake.alive) return;
 
   snake.Update();
@@ -79,43 +95,27 @@ void Game::Update() {
   int new_y = static_cast<int>(snake.head_y);
 
   // Check if there's food where the head is
-  if (food.x == new_x && food.y == new_y) {
+  if (food.x == new_x && food.y == new_y)
+  {
     score++;
     PlaceFood();
-    if (score % 5 == 0) {
-      CreateSuperFood(score, new_x, new_y);
-    } else {
-      superfood.x = -1;
-      superfood.y = -1;
-    }
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
-  } else if (superfood.x == new_x and superfood.y == new_y) 
+  } 
+  else if (superLevel)
+  // check if its a super level, if yes then check if superfood is where head is
   {
-    score++;
-    snake.GrowBody();
-    snake.speed -= 0.1;
-  }
+    if (superfood.x == new_x and superfood.y == new_y)
+    {
+      score++;
+      PlaceSuperfood();
+      // superfood reduces speed instead
+      snake.GrowBody();
+      snake.speed -= 0.1;
+    }
+  }  
 }
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
-
-void Game::CreateSuperFood(int givenScore, int new_x, int new_y) {
-  int x, y;
-  x = random_w(engine);
-  y = random_h(engine);
-  if (!snake.SnakeCell(x, y) and !x==food.x and !y==food.y) {
-    cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
-    superfood.x = x;
-    superfood.y = y;
-  // while (score == givenScore)
-  // {
-  //   if (superfood.x == new_x and superfood.y == new_y) {
-  //     score++;
-  //     snake.GrowBody();
-  //     snake.speed -= 0.1;
-  //   }
-  }
-}
