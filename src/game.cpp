@@ -12,6 +12,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   score = (int *)malloc(sizeof(int));
+  SetScore();
   PlaceFood();
   PlaceSuperfood();
 }
@@ -145,5 +146,8 @@ void Game::Update(bool superLevel) {
 int Game::GetScore() const { return *score; }
 void Game::IncrementScore() {
   *score == *score + 1;
+}
+void Game::SetScore() {
+  *score = 0;
 }
 int Game::GetSize() const { return snake.size; }

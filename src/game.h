@@ -27,12 +27,13 @@ class Game {
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
 
-  int *score{0};
+  int *score;
 
   void PlaceFood();
   void PlaceSuperfood();
   void Update(bool superLevel);
   void IncrementScore();
+  void SetScore();
 };
 
 #endif
