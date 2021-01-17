@@ -124,7 +124,7 @@ void Game::Update(bool superLevel) {
     if (superfood.x == new_x and superfood.y == new_y)
     {
       score++;
-      PlaceFood();
+      // PlaceFood();
       PlaceSuperfood();
       // superfood reduces speed instead
       snake.GrowBody();
