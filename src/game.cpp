@@ -64,8 +64,7 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
-    // food.
+    // Check that the location is not occupied by a snake item before placing food.
     if (!snake.SnakeCell(x, y)) {
       cout << "placing food x: " << food.x << " y: " << food.y << std::endl;
       food.x = x;
@@ -77,13 +76,18 @@ void Game::PlaceFood() {
 
 void Game::PlaceSuperfood() {
   int x, y;
-  x = random_w(engine);
-  y = random_h(engine);
-  if (!snake.SnakeCell(x, y) and !x==food.x and !y==food.y) {
-    cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
-    superfood.x = x;
-    superfood.y = y;
-  }
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake or food item before placing food.
+    if (!snake.SnakeCell(x, y) and !x==food.x and !y==food.y) {
+      cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
+      superfood.x = x;
+      superfood.y = y;
+    } else {
+      cout << "invalid superfood location x: " << superfood.x << " y: " << superfood.y << std::endl;
+    }
+  }  
 }
 
 void Game::Update(bool superLevel) {
@@ -109,12 +113,13 @@ void Game::Update(bool superLevel) {
     if (superfood.x == new_x and superfood.y == new_y)
     {
       score++;
+      PlaceFood();
       PlaceSuperfood();
       // superfood reduces speed instead
       snake.GrowBody();
       snake.speed -= 0.1;
     }
-  }  
+  }
 }
 
 int Game::GetScore() const { return score; }
