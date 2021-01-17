@@ -30,11 +30,11 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     controller.HandleInput(running, snake);
     if ((score % 3 == 0) && (score != 0)) {
       Update(true);
-      renderer.RenderSuperFood(superfood);
+      renderer.RenderSuperFood(snake, food, superfood);
     } else {
       Update(false);
+      renderer.Render(snake, food);
     }
-    renderer.Render(snake, food);
 
     frame_end = SDL_GetTicks();
 
@@ -118,7 +118,7 @@ void Game::Update(bool superLevel) {
       PlaceSuperfood();
       // superfood reduces speed instead
       snake.GrowBody();
-      snake.speed -= 0.1;
+      snake.speed -= 0.02;
     }
   }
 }
