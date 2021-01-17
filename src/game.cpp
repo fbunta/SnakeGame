@@ -146,7 +146,7 @@ void Game::Update(bool superLevel) {
 int Game::GetScore() { return *score; }
 void Game::IncrementScore() {
   int currentScore = GetScore();
-  cout << "current score is " << currentScore << std::endl;
+  cout << "current score " << currentScore << std::endl;
   SetScore(currentScore + 1);
 }
 void Game::SetScore(int newScore) {
