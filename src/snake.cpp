@@ -20,7 +20,6 @@ void Snake::Update() {
 }
 
 void Snake::UpdateHead() {
-  std::cout << "snake is x: " << head_x << " y: " << head_y << std::endl;
   switch (direction) {
     case Direction::kUp:
     //  origin is in upper left corner in sdl with Y axis positive in bottom left corner, so going up in game means decreasing Y value 
