@@ -64,7 +64,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(*score, frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -121,7 +121,7 @@ void Game::Update(bool superLevel) {
   // Check if there's food where the head is
   if (food.x == new_x && food.y == new_y)
   {
-    *score++;
+    IncrementScore();
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
@@ -132,7 +132,7 @@ void Game::Update(bool superLevel) {
   {
     if (superfood.x == new_x and superfood.y == new_y)
     {
-      *score++;
+      IncrementScore();
       // PlaceFood();
       PlaceSuperfood();
       // superfood reduces speed instead
@@ -143,4 +143,7 @@ void Game::Update(bool superLevel) {
 }
 
 int Game::GetScore() const { return *score; }
+void Game::IncrementScore() {
+  *score == *score + 1;
+}
 int Game::GetSize() const { return snake.size; }

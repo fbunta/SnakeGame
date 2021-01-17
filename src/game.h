@@ -32,6 +32,7 @@ class Game {
   void PlaceFood();
   void PlaceSuperfood();
   void Update(bool superLevel);
+  void IncrementScore();
 };
 
 #endif
