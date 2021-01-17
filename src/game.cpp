@@ -12,6 +12,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   PlaceFood();
+  PlaceSuperfood();
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -23,6 +24,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   bool running = true;
 
+  int superFoodMoveDuration = 0;
+
   while (running) {
     frame_start = SDL_GetTicks();
 
@@ -30,6 +33,11 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     controller.HandleInput(running, snake);
     if ((score % 3 == 0) && (score != 0)) {
       Update(true);
+      ++superFoodMoveDuration;
+      if (superFoodMoveDuration == 20) {
+        PlaceSuperfood();
+        superFoodMoveDuration = 0;
+      }
       renderer.RenderSuperFood(snake, food, superfood);
     } else {
       Update(false);
@@ -66,9 +74,9 @@ void Game::PlaceFood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing food.
     if (!snake.SnakeCell(x, y)) {
-      cout << "placing food x: " << food.x << " y: " << food.y << std::endl;
       food.x = x;
       food.y = y;
+      cout << "placing next food x: " << food.x << " y: " << food.y << std::endl;
       return;
     }
   }
@@ -81,9 +89,9 @@ void Game::PlaceSuperfood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake or food item before placing food.
     if ((!snake.SnakeCell(x, y)) && (x != food.x) && (y != food.y)) {
-      cout << "placing superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
       superfood.x = x;
       superfood.y = y;
+      cout << "placing next superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
       return;
     } else {
       cout << "invalid superfood location x: " << superfood.x << " y: " << superfood.y << std::endl;
@@ -92,6 +100,8 @@ void Game::PlaceSuperfood() {
 }
 
 void Game::Update(bool superLevel) {
+  PlaceFood();
+  
   if (!snake.alive) return;
 
   snake.Update();
@@ -118,7 +128,7 @@ void Game::Update(bool superLevel) {
       PlaceSuperfood();
       // superfood reduces speed instead
       snake.GrowBody();
-      snake.speed -= 0.02;
+      snake.speed -= 0.03;
     }
   }
 }
