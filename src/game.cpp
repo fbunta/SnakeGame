@@ -142,12 +142,12 @@ void Game::Update(bool superLevel) {
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
 
-  std::future<bool> ftr1 = std::async(CheckFood, this, new_x, new_y);
+  std::future<bool> ftr1 = std::async(&Game::CheckFood, this, new_x, new_y);
 
   if (superLevel)
   {
     // check if its a super level, if yes then check if superfood is where head is
-    std::future<bool> ftr2 = std::async(CheckSuperfood, this, new_x, new_y);
+    std::future<bool> ftr2 = std::async(&Game::CheckSuperfood, this, new_x, new_y);
   }
 }
 
