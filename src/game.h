@@ -7,6 +7,7 @@
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
+#include <memory>
 
 class Game {
  public:
@@ -27,8 +28,7 @@ class Game {
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
-
-  int *score;
+  std::unique_ptr<int> score;
 
   void PlaceFood();
   void PlaceSuperfood();

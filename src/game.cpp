@@ -11,8 +11,8 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
-  cout << "grid width " << grid_width << "grid height " << grid_height << std::endl; 
-  score = (int *)malloc(sizeof(int));
+  cout << "grid width " << grid_width << "grid height " << grid_height << std::endl;
+  score = std::make_unique<int>();
   SetScore(0);
   PlaceFood();
   PlaceSuperfood();
@@ -21,7 +21,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 Game::~Game() {
   if (score != nullptr)
   {
-    free(score);
+    // free(score);
     cout << "resource freed" << std::endl;
   } else {
     cout << "resource did not need to be freed" << std::endl;
