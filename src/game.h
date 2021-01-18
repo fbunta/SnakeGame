@@ -10,6 +10,7 @@
 #include <memory>
 #include <future>
 #include <thread>
+#include <vector>
 
 class Game {
  public:
@@ -24,6 +25,7 @@ class Game {
   Snake snake;
   SDL_Point food;
   SDL_Point superfood;
+  std::vector<SDL_Point> dangerVector;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -33,10 +35,12 @@ class Game {
 
   void PlaceFood();
   void PlaceSuperfood();
+  void PlaceDanger();
   void Update(bool superLevel);
   void IncrementScore();
   bool CheckFood(int new_x, int new_y);
   bool CheckSuperfood(int new_x, int new_y);
+  bool CheckDanger(int new_x, int new_y);
 };
 
 #endif

@@ -41,10 +41,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
         PlaceSuperfood();
         superFoodMoveDuration = 0;
       }
-      renderer.RenderSuperFood(snake, food, superfood);
+      renderer.RenderSuperFood(snake, food, superfood, dangerVector);
     } else {
       Update(false);
-      renderer.Render(snake, food);
+      renderer.Render(snake, food, dangerVector);
     }
 
     frame_end = SDL_GetTicks();
@@ -102,6 +102,23 @@ void Game::PlaceSuperfood() {
   }  
 }
 
+void Game::PlaceDanger() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake or food item before placing food.
+    if ((!snake.SnakeCell(x, y)) && (x != food.x) && (y != food.y) && (x != superfood.x) && (y != superfood.y)) {
+      SDL_Point danger = {x, y};
+      dangerVector.emplace_back(danger);
+      cout << "placing another danger x: " << x << " y: " << y << std::endl;
+      return;
+    } else {
+      cout << "invalid danger location x: " << x << " y: " << y << std::endl;
+    }
+  }
+}
+
 bool Game::CheckFood(int new_x, int new_y) {
   // Check if there's food where the head is
   if (food.x == new_x && food.y == new_y)
@@ -123,6 +140,7 @@ bool Game::CheckSuperfood(int new_x, int new_y) {
   {
     IncrementScore();
     PlaceSuperfood();
+    PlaceDanger();
     // superfood reduces speed instead
     snake.GrowBody();
     snake.speed -= 0.03;
@@ -131,7 +149,18 @@ bool Game::CheckSuperfood(int new_x, int new_y) {
   {
     return false;
   }
-  
+}
+
+bool Game::CheckDanger(int new_x, int new_y) {
+  for (SDL_Point danger: dangerVector)
+  {
+    if (danger.x == new_x && danger.y == new_y)
+    {
+      snake.alive = false;
+      return true;
+    }
+  }
+  return false;
 }
 
 void Game::Update(bool superLevel) {  
@@ -143,7 +172,7 @@ void Game::Update(bool superLevel) {
   int new_y = static_cast<int>(snake.head_y);
 
   std::future<bool> ftr1 = std::async(&Game::CheckFood, this, new_x, new_y);
-
+  std::future<bool> ftr3 = std::async(&Game::CheckDanger, this, new_x, new_y);
   if (superLevel)
   {
     // check if its a super level, if yes then check if superfood is where head is

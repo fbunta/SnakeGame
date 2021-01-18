@@ -39,7 +39,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::RenderSuperFood(Snake const snake, SDL_Point const &food, SDL_Point const &superfood) {
+void Renderer::RenderSuperFood(Snake const snake, SDL_Point const &food, SDL_Point const &superfood, std::vector<SDL_Point> const &dangerVector) {
   SDL_Rect block;
   // blocks have x and y axis and height and width
   block.w = screen_width / grid_width;
@@ -56,12 +56,19 @@ void Renderer::RenderSuperFood(Snake const snake, SDL_Point const &food, SDL_Poi
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
-   // Render superfood
+  // Render superfood
   SDL_SetRenderDrawColor(sdl_renderer, 34, 232, 12, 0xFF);
   block.x = superfood.x * block.w;
   block.y = superfood.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
+  // Render danger
+  for (SDL_Point danger: dangerVector) {
+    SDL_SetRenderDrawColor(sdl_renderer, 224, 9, 99, 0xFF);
+    block.x = danger.x * block.w;
+    block.y = danger.y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
   for (SDL_Point const &point : snake.body) {
@@ -84,7 +91,7 @@ void Renderer::RenderSuperFood(Snake const snake, SDL_Point const &food, SDL_Poi
   SDL_RenderPresent(sdl_renderer);
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, std::vector<SDL_Point> const &dangerVector) {
   SDL_Rect block;
   // blocks have x and y axis and height and width
   block.w = screen_width / grid_width;
@@ -101,6 +108,14 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
+
+  // Render danger
+  for (SDL_Point danger: dangerVector) {
+    SDL_SetRenderDrawColor(sdl_renderer, 224, 9, 99, 0xFF);
+    block.x = danger.x * block.w;
+    block.y = danger.y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
