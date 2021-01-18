@@ -8,11 +8,12 @@
 #include "renderer.h"
 #include "snake.h"
 #include <memory>
+#include <future>
+#include <thread>
 
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height);
-  ~Game();
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore();
@@ -34,6 +35,8 @@ class Game {
   void PlaceSuperfood();
   void Update(bool superLevel);
   void IncrementScore();
+  bool CheckFood(int new_x, int new_y);
+  bool CheckSuperfood(int new_x, int new_y);
 };
 
 #endif
