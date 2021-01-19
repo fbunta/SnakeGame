@@ -77,6 +77,7 @@ void Game::PlaceFood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing food.
     if ((!snake.SnakeCell(x, y)) && (!CheckFood(x, y)) && (!CheckDanger(x, y)) && (!CheckSuperfood(x, y))) {
+      std::lock_guard<std::mutex> lck(mtx);
       food.x = x;
       food.y = y;
       cout << "placing next food x: " << food.x << " y: " << food.y << std::endl;
@@ -92,6 +93,7 @@ void Game::PlaceSuperfood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake or food item before placing food.
     if ((!snake.SnakeCell(x, y)) && (!CheckFood(x, y)) && (!CheckDanger(x, y)) && (!CheckSuperfood(x, y))) {
+      std::lock_guard<std::mutex> lck(mtx);
       superfood.x = x;
       superfood.y = y;
       cout << "placing next superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
@@ -109,6 +111,7 @@ void Game::PlaceDanger() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake or food item before placing food.
     if ((!snake.SnakeCell(x, y)) && (!CheckFood(x, y)) && (!CheckDanger(x, y)) && (!CheckSuperfood(x, y))) {
+      std::lock_guard<std::mutex> lck(mtx);
       SDL_Point danger = {x, y};
       dangerVector.emplace_back(danger);
       cout << "placing another danger x: " << x << " y: " << y << std::endl;

@@ -11,6 +11,7 @@
 #include <future>
 #include <thread>
 #include <vector>
+#include <mutex>
 
 class Game {
  public:
@@ -32,6 +33,7 @@ class Game {
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
   std::unique_ptr<int> score;
+  std::mutex mtx;
 
   // SDL_Point GetFood();
   // SDL_Point GetSuperfood();
