@@ -28,6 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   bool running = true;
 
   int superFoodMoveDuration = 0;
+  int testBug = 0;
 
   while (running) {
     frame_start = SDL_GetTicks();
@@ -44,6 +45,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       renderer.RenderSuperFood(snake, food, superfood, dangerVector);
     } else {
       Update();
+      ++ testBug;
+      if (testBug == 1000) {
+        cout << "food is at " << food.x << ", " << food.y << std::endl;
+      }
       renderer.Render(snake, food, dangerVector);
     }
 
