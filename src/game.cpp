@@ -48,6 +48,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       ++ testBug;
       if (testBug == 1000) {
         cout << "food is at " << food.x << ", " << food.y << std::endl;
+        testBug = 0;
       }
       renderer.Render(snake, food, dangerVector);
     }
