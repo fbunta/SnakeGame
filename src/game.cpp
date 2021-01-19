@@ -9,9 +9,10 @@ using std::cout;
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
-      random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height)) {
-  cout << "grid width " << grid_width << "grid height " << grid_height << std::endl;
+      random_w(0, static_cast<int>(grid_width-1)),
+      random_h(0, static_cast<int>(grid_height-1)) {
+  cout << "The grid width: " << grid_width << " and grid height: " << grid_height << std::endl;
+  // because the block starts at 0,0 starting a block at 32 will actually be off-screen
   score = std::make_unique<int>();
   SetScore(0);
   PlaceFood();
