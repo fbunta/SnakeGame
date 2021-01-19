@@ -66,7 +66,11 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       frame_count = 0;
       title_timestamp = frame_end;
     }
-
+    if (!snake.alive)
+    {
+      running = false;
+      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    }
     // If the time for this frame is too small (i.e. frame_duration is
     // smaller than the target ms_per_frame), delay the loop to
     // achieve the correct frame rate.
@@ -74,6 +78,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+  renderer.GameOver(*score);
+  std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 }
 
 void Game::PlaceFood() {

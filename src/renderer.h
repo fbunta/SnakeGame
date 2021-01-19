@@ -15,6 +15,7 @@ class Renderer {
   void Render(Snake const snake, SDL_Point const &food, std::vector<SDL_Point> const &dangerVector);
   void RenderSuperFood(Snake const snake, SDL_Point const &food, SDL_Point const &superfood, std::vector<SDL_Point> const &dangerVector);
   void UpdateWindowTitle(int _score, int fps);
+  void GameOver(int);
 
  private:
   SDL_Window *sdl_window;

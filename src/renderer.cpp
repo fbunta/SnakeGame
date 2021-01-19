@@ -143,3 +143,12 @@ void Renderer::UpdateWindowTitle(int score, int fps) {
   std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps) + " press q to quit"};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
+
+void Renderer::GameOver(int score) {
+  std::string strObj = "Your score was: "+ std::to_string(score);
+  SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,
+                         "Game Over",
+                         &strObj[0],
+                         sdl_window);
+  SDL_RenderPresent(sdl_renderer);
+}
