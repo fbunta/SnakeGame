@@ -35,7 +35,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     if ((*score % 3 == 0) && (*score != 0)) {
-      Update(true);
+      UpdateSuperLevel();
       ++superFoodMoveDuration;
       if (superFoodMoveDuration == 200) {
         PlaceSuperfood();
@@ -43,7 +43,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       }
       renderer.RenderSuperFood(snake, food, superfood, dangerVector);
     } else {
-      Update(false);
+      Update();
       renderer.Render(snake, food, dangerVector);
     }
 
@@ -76,7 +76,7 @@ void Game::PlaceFood() {
     x = random_w(engine);
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing food.
-    if (!snake.SnakeCell(x, y)) {
+    if ((!snake.SnakeCell(x, y)) && (!CheckFood(x, y)) && (!CheckDanger(x, y)) && (!CheckSuperfood(x, y))) {
       food.x = x;
       food.y = y;
       cout << "placing next food x: " << food.x << " y: " << food.y << std::endl;
@@ -91,7 +91,7 @@ void Game::PlaceSuperfood() {
     x = random_w(engine);
     y = random_h(engine);
     // Check that the location is not occupied by a snake or food item before placing food.
-    if ((!snake.SnakeCell(x, y)) && (x != food.x) && (y != food.y)) {
+    if ((!snake.SnakeCell(x, y)) && (!CheckFood(x, y)) && (!CheckDanger(x, y)) && (!CheckSuperfood(x, y))) {
       superfood.x = x;
       superfood.y = y;
       cout << "placing next superfood x: " << superfood.x << " y: " << superfood.y << std::endl;
@@ -108,7 +108,7 @@ void Game::PlaceDanger() {
     x = random_w(engine);
     y = random_h(engine);
     // Check that the location is not occupied by a snake or food item before placing food.
-    if ((!snake.SnakeCell(x, y)) && (x != food.x) && (y != food.y) && (x != superfood.x) && (y != superfood.y)) {
+    if ((!snake.SnakeCell(x, y)) && (!CheckFood(x, y)) && (!CheckDanger(x, y)) && (!CheckSuperfood(x, y))) {
       SDL_Point danger = {x, y};
       dangerVector.emplace_back(danger);
       cout << "placing another danger x: " << x << " y: " << y << std::endl;
@@ -120,14 +120,8 @@ void Game::PlaceDanger() {
 }
 
 bool Game::CheckFood(int new_x, int new_y) {
-  // Check if there's food where the head is
   if (food.x == new_x && food.y == new_y)
   {
-    IncrementScore();
-    PlaceFood();
-    // Grow snake and increase speed.
-    snake.GrowBody();
-    snake.speed += 0.02;
     return true;
   } else
   {
@@ -138,12 +132,6 @@ bool Game::CheckFood(int new_x, int new_y) {
 bool Game::CheckSuperfood(int new_x, int new_y) {
   if (superfood.x == new_x && superfood.y == new_y)
   {
-    IncrementScore();
-    PlaceSuperfood();
-    PlaceDanger();
-    // superfood reduces speed instead
-    snake.GrowBody();
-    snake.speed -= 0.03;
     return true;
   } else
   {
@@ -156,14 +144,53 @@ bool Game::CheckDanger(int new_x, int new_y) {
   {
     if (danger.x == new_x && danger.y == new_y)
     {
-      snake.alive = false;
       return true;
     }
   }
   return false;
 }
 
-void Game::Update(bool superLevel) {  
+void Game::ActionSuperLevel(bool hitFood, bool hitSuperfood, bool hitDanger) 
+  {
+    if (hitFood)
+    {
+      IncrementScore();
+      PlaceFood();
+      PlaceDanger();
+      // Grow snake and increase speed.
+      snake.GrowBody();
+      snake.speed += 0.02;
+    }
+    else if (hitSuperfood)
+    {
+      IncrementScore();
+      PlaceSuperfood();
+      PlaceDanger();
+      // superfood reduces speed instead
+      snake.GrowBody();
+      snake.speed -= 0.03;
+    }
+    else if (hitDanger)
+    {
+      snake.alive = false;
+    }
+  }
+void Game::Action(bool hitFood, bool hitDanger) 
+  {
+    if (hitFood)
+    {
+      IncrementScore();
+      PlaceFood();
+      // Grow snake and increase speed.
+      snake.GrowBody();
+      snake.speed += 0.02;
+    }
+    else if (hitDanger)
+    {
+      snake.alive = false;
+    }
+  }
+void Game::Update() {  
   if (!snake.alive) return;
 
   snake.Update();
@@ -171,14 +198,36 @@ void Game::Update(bool superLevel) {
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
 
-  std::future<bool> ftr1 = std::async(&Game::CheckFood, this, new_x, new_y);
   std::future<bool> ftr3 = std::async(&Game::CheckDanger, this, new_x, new_y);
-  if (superLevel)
+  std::future<bool> ftr1 = std::async(&Game::CheckFood, this, new_x, new_y);
+  bool hitFood = ftr1.get();
+  bool hitDanger = ftr3.get();
+  if (hitDanger || hitFood)
   {
-    // check if its a super level, if yes then check if superfood is where head is
-    std::future<bool> ftr2 = std::async(&Game::CheckSuperfood, this, new_x, new_y);
+    Action(hitFood, hitDanger);
   }
 }
+
+void Game::UpdateSuperLevel() {  
+  if (!snake.alive) return;
+
+  snake.Update();
+
+  int new_x = static_cast<int>(snake.head_x);
+  int new_y = static_cast<int>(snake.head_y);
+
+  std::future<bool> ftr3 = std::async(&Game::CheckDanger, this, new_x, new_y);
+  std::future<bool> ftr1 = std::async(&Game::CheckFood, this, new_x, new_y);
+  std::future<bool> ftr2 = std::async(&Game::CheckSuperfood, this, new_x, new_y);
+  bool hitFood = ftr1.get();
+  bool hitSuperfood = ftr2.get();
+  bool hitDanger = ftr3.get();
+  if (hitDanger || hitFood || hitSuperfood)
+  {
+    ActionSuperLevel(hitFood, hitSuperfood, hitDanger);
+  }
+}
+
 
 int Game::GetScore() { return *score; }
 void Game::IncrementScore() {

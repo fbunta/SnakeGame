@@ -33,10 +33,17 @@ class Game {
   std::uniform_int_distribution<int> random_h;
   std::unique_ptr<int> score;
 
+  // SDL_Point GetFood();
+  // SDL_Point GetSuperfood();
+  // std::vector<SDL_Point> GetDangerVector();
+  void ActionSuperLevel(bool hitFood, bool hitSuperfood, bool hitDanger);
+  void Action(bool hitFood, bool hitDanger);
+
   void PlaceFood();
   void PlaceSuperfood();
   void PlaceDanger();
-  void Update(bool superLevel);
+  void Update();
+  void UpdateSuperLevel();
   void IncrementScore();
   bool CheckFood(int new_x, int new_y);
   bool CheckSuperfood(int new_x, int new_y);
