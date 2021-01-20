@@ -1,12 +1,17 @@
-# CPPND: Capstone Snake Game Example
+# Snake Game
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This repo was developed for the final project of Udacity's C++ Nanodegree
 
 <img src="snake_game.gif"/>
 
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
+## Rules of the Game
+Snake is a classic arcade game of directing a snake to eat blocks of food which increases the score but subsequently increases the size and speed of the snake. Therefore, each time the score goes up the game gets slightly harder. The only way to lose was to direct the head of the snake into a part of its tail.
 
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
+In this expansion there are two additional blocks: superfood (green) and danger (red).
+
+The superfood will appear once every few levels and is valuable because it slows down the snake instead of speeding it up. The only catch is that superfood changes position on the board every few seconds making it tricky to capture.
+
+Danger blocks are another way of killing your snake then the traditional running into the tail problem described above. Danger blocks will appear every few levels and never will disappear, making the game harder and harder as the score increases.
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
